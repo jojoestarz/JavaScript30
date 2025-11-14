@@ -12,12 +12,12 @@ html {
 
 input {
   width: 100%;
-  padding: 20px;
+  padding: 10px;
 }
 
 .search-form {
   max-width: 400px;
-  margin: 50px auto;
+  margin: 80px auto;
 }
 
 input.search {

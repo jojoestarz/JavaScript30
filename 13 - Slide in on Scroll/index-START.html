@@ -58,6 +58,27 @@
         if (callNow) func.apply(context, args);
       };
     }
+    const SlideImages = document.querySelectorAll ('.slide-in')
+    function checkSlide(e){ //check the point at which the animation should take place
+      SlideImages.forEach(image =>{
+        const slideInAt = (window.scrollY + window.innerHeight)-image.height /2; // current position from the bottom of page, when quater of the image is shown
+        console.log("this image"+image + slideInAt)
+        
+        const imageBottom = image.offsetTop + image.height; //bottom of image
+        
+        const isShown = slideInAt > image.offsetTop
+        
+        
+        const isNotScrolledPast = window.screenY < imageBottom
+
+        if(isShown && isNotScrolledPast){
+          image.classList.add('active');
+        }else{
+          image.classList.remove('active');
+        }
+      });
+    }
+    window.addEventListener('scroll',debounce(checkSlide))
 
   </script>
 

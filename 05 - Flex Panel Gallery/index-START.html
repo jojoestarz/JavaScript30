@@ -27,6 +27,9 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      background-color: #ffc600;
+      display: flex;
+
     }
 
     .panel {
@@ -44,20 +47,40 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex:1;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;      
     }
 
-    .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
-    .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
+    .panel1 { background-image:url(https://images.unsplash.com/photo-1759675795062-a657fcb278b1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1601); }
+    .panel2 { background-image:url(https://images.unsplash.com/photo-1760985813018-b6b951c57fe8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3fHx8ZW58MHx8fHx8&auto=format&fit=crop&q=60&w=800); }
     .panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
-    .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
-    .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
+    .panel4 { background-image:url(https://images.unsplash.com/photo-1760679171231-7673b857e2f2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=800); }
+    .panel5 { background-image:url(https://images.unsplash.com/photo-1760773767056-c7f1d4e4db5a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=60&w=800); }
 
     /* Flex Children */
     .panel > * {
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      flex: 1 0 auto;
+      display: flex;
+      justify-content:center;
+      align-items: center;
+
     }
+    .panel > *:first-child{
+      transform:translateY(-100%) ;
+    }
+    .panel.open-active > *:first-child{
+      transform:translateY(0%) ;
+    }
+
+
+    .panel >*:last-child{ transform: translateY(100%);}
+    .panel.open-active >*:last-child{ transform: translateY(0%);}
+
 
     .panel p {
       text-transform: uppercase;
@@ -71,6 +94,7 @@
     }
 
     .panel.open {
+      flex: 5;
       font-size: 40px;
     }
 
@@ -88,7 +112,7 @@
       <p>Take</p>
       <p>Receive</p>
     </div>
-    <div class="panel panel3">
+    <div class=" panel panel3">
       <p>Experience</p>
       <p>It</p>
       <p>Today</p>
@@ -106,6 +130,18 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
+    function toggleOpen(){
+      this.classList.toggle('open');
+    }
+    function toggleActive(e){
+      console.log(e.propertyName);
+      if(e.propertyName.includes('flex')){
+        this.classList.toggle('open-active')
+      }
+    }
+    panels.forEach(panel=> panel.addEventListener('click',toggleOpen))
+    panels.forEach(panel=> panel.addEventListener('transitionend',toggleActive))
 
   </script>
 
