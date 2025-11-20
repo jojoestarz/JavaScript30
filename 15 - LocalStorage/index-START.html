@@ -24,13 +24,93 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+
+    <div>
+      <button type="button" name="checkAll" id="checkAll">check</button>
+      <button type="button" name="uncheckAll" id="uncheckAll">uncheck</button>
+      <button type="button" name="clear" id="clear">clear</button>
+    </div>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+  const checkBtn = document.querySelector('#checkAll');
+  const uncheckBtn = document.querySelector('#uncheckAll');
+  const clearBtn = document.querySelector('#clear');
 
+  function addItem(e){
+    e.preventDefault(); //stops page reloading
+    let text = (this.querySelector('[name=item]')).value
+
+    let item = {
+      name : text,
+      isDone : false
+    };
+    items.push(item);
+    populateList(items,itemsList);
+    localStorage.setItem('items',JSON.stringify(items))
+    console.log(items);
+    
+   this.reset();
+  }
+
+  function populateList(plates = [],platesList) {
+    platesList.innerHTML = plates.map((plate,i) => {
+      return `
+      <li>
+        <input type="checkbox" data-index=${i} id="item${i}" ${plate.isDone ? 'checked' : ''} />
+        <label for="item${i}">${plate.name}</label>
+      </li>`
+    }).join('');
+  }
+
+  function toggleDone(e){
+    if(!e.target.matches('input')) return; //if the target event isnt an input we dont care
+    const el = e.target; 
+    const index = el.dataset.index;
+    items[index].isDone = !items[index].isDone
+    localStorage.setItem('items',JSON.stringify(items))
+    populateList(items,itemsList)
+  
+  }
+  function uncheck(){
+    //go to each item in the html list and remove the check attribute then change the item objects properties
+    items.map((el,i)=>{
+      const checkbox = document.querySelector(`input[data-index="${i}"]`)
+      if(checkbox.checked){
+        checkbox.checked = false;
+      }
+      el.isDone = false
+    })
+    localStorage.setItem('items',JSON.stringify(items))
+  }
+function check(){
+  items.map((el,i)=>{
+      const checkbox = document.querySelector(`input[data-index="${i}"]`)
+      if(checkbox){
+        checkbox.checked = true;
+      }
+      el.isDone = true
+    })
+    localStorage.setItem('items',JSON.stringify(items))
+}
+
+function clear(){
+  //remove html elements, empty local storage
+  itemsList.innerHTML = "<li>Loading Tapas...</li>"
+  localStorage.removeItem("items")
+
+}
+  clearBtn.addEventListener('click',clear)
+  uncheckBtn.addEventListener('click',uncheck)
+  checkBtn.addEventListener('click',check)
+  addItems.addEventListener('submit',addItem);
+  itemsList.addEventListener('click',toggleDone)
+  populateList(items,itemsList)
+
+  //find the item, add onclick event to it
 </script>
 
 
