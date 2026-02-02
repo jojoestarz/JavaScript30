@@ -28,6 +28,19 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const triggers = document.querySelectorAll('a');
+    const highlighter = document.createElement('span');
+    highlighter.classList.add('highlight');
+    document.body.append(highlighter);
+    function highlightLink(){
+      linkCoords = this.getBoundingClientRect();//gets size of element and its position relative to viewport
+      highlighter.style.width = `${linkCoords.width}px`;
+      highlighter.style.height = `${linkCoords.height}px`;
+      highlighter.style.transform = `translate(${linkCoords.left + window.scrollX}px, ${linkCoords.top + window.scrollY}px)`;
+      console.log("highlighted") 
+    }
+    triggers.forEach(a=>{a.addEventListener('mouseenter',highlightLink)})
+
   </script>
 </body>
 </html>
